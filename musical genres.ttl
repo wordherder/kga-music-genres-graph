@@ -1,0 +1,179 @@
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos:    <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix vann:    <http://purl.org/vocab/vann/> .
+@prefix mgmw:    <http://mgmw.org/musical-genres-works#> .
+@prefix mgmwo:   <http://mgmw.org/ontology#> .
+
+# =====================================================================
+# Musical Genres & Works -- OWL TBox (hybrid with the mgmw SKOS scheme)
+#
+# Layering:
+#   * mgmw:   SKOS concept scheme = the genre VOCABULARY (labels, hierarchy,
+#             definitions, change notes). Unchanged.
+#   * mgmwo:  this file = the SCHEMA (what kinds of things exist and how
+#             they relate). Genre individuals ARE the mgmw SKOS concepts.
+#
+# Genre hierarchy is carried by skos:broader/skos:narrower between genre
+# individuals, NOT by OWL subclassing. There is deliberately no SubGenre
+# class: "subgenre" is a relation (Trap is narrower than Hip-hop), not a
+# type, and a typed SubGenre breaks as soon as a subgenre has subgenres.
+# =====================================================================
+
+<http://mgmw.org/ontology> a owl:Ontology ;
+    dcterms:title "Musical Genres and Musical Works -- Ontology (TBox)"@en ;
+    dcterms:creator "wordherder" ;
+    dcterms:created "2026-10-05"^^xsd:date ;
+    vann:preferredNamespacePrefix "mgmwo" ;
+    vann:preferredNamespaceUri "http://mgmw.org/ontology#" ;
+    rdfs:comment "OWL schema layered over the mgmw SKOS concept scheme. Genres are SKOS concepts typed as mgmwo:Genre; genre hierarchy uses skos:broader."@en .
+
+# Referenced external terms (declared so OWL tools treat them correctly
+# without importing SKOS, which is not OWL 2 DL-safe as a whole).
+skos:Concept   a owl:Class .
+skos:broader   a owl:ObjectProperty .
+skos:narrower  a owl:ObjectProperty .
+skos:related   a owl:ObjectProperty .
+skos:inScheme  a owl:ObjectProperty .
+skos:prefLabel  a owl:AnnotationProperty .
+skos:altLabel   a owl:AnnotationProperty .
+skos:definition a owl:AnnotationProperty .
+skos:changeNote a owl:AnnotationProperty .
+dcterms:creator  a owl:AnnotationProperty .
+dcterms:created  a owl:AnnotationProperty .
+dcterms:title    a owl:AnnotationProperty .
+vann:preferredNamespacePrefix a owl:AnnotationProperty .
+vann:preferredNamespaceUri    a owl:AnnotationProperty .
+
+# ---------------------------------------------------------------------
+# CLASSES
+# ---------------------------------------------------------------------
+
+mgmwo:Genre a owl:Class ;
+    rdfs:subClassOf skos:Concept ;
+    skos:prefLabel "Genre"@en ;
+    skos:definition "A category that identifies pieces of music as belonging to a shared tradition or set of conventions. Instances are concepts in the mgmw SKOS scheme."@en ;
+    rdfs:seeAlso <https://www.wikidata.org/wiki/Q188451> , <http://purl.org/ontology/mo/Genre> .
+
+mgmwo:MusicalForm a owl:Class ;
+    rdfs:subClassOf skos:Concept ;
+    skos:prefLabel "Musical form"@en ;
+    skos:definition "A structural type of musical composition (e.g. symphonic poem, sonata, fugue), independent of stylistic tradition."@en ;
+    rdfs:comment "Candidate home for mgmw:SymphonicPoem, which is a compositional form rather than a stylistic genre."@en .
+
+mgmwo:MusicalWork a owl:Class ;
+    skos:prefLabel "Musical work"@en ;
+    skos:definition "An abstract musical composition or song, distinct from any particular performance or recording of it."@en ;
+    rdfs:seeAlso <http://purl.org/ontology/mo/MusicalWork> .
+
+mgmwo:Artist a owl:Class ;
+    skos:prefLabel "Artist"@en ;
+    skos:definition "A person or group who composes or performs music."@en ;
+    rdfs:seeAlso <http://purl.org/ontology/mo/MusicArtist> .
+
+mgmwo:Era a owl:Class ;
+    skos:prefLabel "Era"@en ;
+    skos:definition "A named, bounded period of time (e.g. 'late 1960s', '20th-century folk revival') used to situate the emergence of a genre."@en ;
+    rdfs:seeAlso <http://www.w3.org/2006/time#ProperInterval> .
+
+mgmwo:Place a owl:Class ;
+    skos:prefLabel "Place"@en ;
+    skos:definition "A geographic location (country, region, city) where a genre originated."@en ;
+    rdfs:comment "Motivated by the existing definitions: Reggae and Ska (Jamaica), K-pop (South Korea), P-pop (Philippines), Country and Bluegrass (United States)."@en .
+
+# Pairwise disjointness of the top-level kinds (a genre is never an artist, etc.).
+[] a owl:AllDisjointClasses ;
+    owl:members ( mgmwo:Genre mgmwo:MusicalWork mgmwo:Artist mgmwo:Era mgmwo:Place ) .
+
+mgmwo:Genre owl:disjointWith mgmwo:MusicalForm .
+
+# ---------------------------------------------------------------------
+# OBJECT PROPERTIES
+# Note: rdfs:domain/range are INFERENCE axioms in OWL (they assert types),
+# not validation checks. Use SHACL for closed-world validation.
+# ---------------------------------------------------------------------
+
+mgmwo:hasGenre a owl:ObjectProperty ;
+    skos:prefLabel "has genre"@en ;
+    rdfs:domain mgmwo:MusicalWork ;
+    rdfs:range  mgmwo:Genre ;
+    rdfs:seeAlso <http://purl.org/ontology/mo/genre> , <https://www.wikidata.org/wiki/Property:P136> .
+
+mgmwo:hasForm a owl:ObjectProperty ;
+    skos:prefLabel "has form"@en ;
+    rdfs:domain mgmwo:MusicalWork ;
+    rdfs:range  mgmwo:MusicalForm .
+
+mgmwo:associatedGenre a owl:ObjectProperty ;
+    skos:prefLabel "associated genre"@en ;
+    skos:definition "Links an artist to a genre they are recognised as working in. Replaces draft 'playsGenre', which implies performance only and excludes composers."@en ;
+    rdfs:domain mgmwo:Artist ;
+    rdfs:range  mgmwo:Genre .
+
+mgmwo:composedBy a owl:ObjectProperty ;
+    skos:prefLabel "composed by"@en ;
+    rdfs:domain mgmwo:MusicalWork ;
+    rdfs:range  mgmwo:Artist .
+
+mgmwo:performedBy a owl:ObjectProperty ;
+    skos:prefLabel "performed by"@en ;
+    rdfs:domain mgmwo:MusicalWork ;
+    rdfs:range  mgmwo:Artist .
+
+mgmwo:emergedDuring a owl:ObjectProperty , owl:FunctionalProperty ;
+    skos:prefLabel "emerged during"@en ;
+    skos:definition "The era in which a genre first emerged. Replaces draft 'originatesFrom', which is ambiguous between time and place."@en ;
+    rdfs:domain mgmwo:Genre ;
+    rdfs:range  mgmwo:Era .
+
+mgmwo:originatedIn a owl:ObjectProperty ;
+    skos:prefLabel "originated in"@en ;
+    rdfs:domain mgmwo:Genre ;
+    rdfs:range  mgmwo:Place .
+
+mgmwo:influencedBy a owl:ObjectProperty ;
+    rdfs:subPropertyOf skos:related ;
+    skos:prefLabel "influenced by"@en ;
+    skos:definition "A genre drew stylistic elements from another genre without being a narrower form of it (e.g. Ska influenced by Jazz). Directional, unlike skos:related."@en ;
+    rdfs:domain mgmwo:Genre ;
+    rdfs:range  mgmwo:Genre .
+
+mgmwo:influenced a owl:ObjectProperty ;
+    owl:inverseOf mgmwo:influencedBy ;
+    skos:prefLabel "influenced"@en .
+
+# ---------------------------------------------------------------------
+# DATATYPE PROPERTIES
+# ---------------------------------------------------------------------
+
+mgmwo:yearEmerged a owl:DatatypeProperty , owl:FunctionalProperty ;
+    skos:prefLabel "year emerged"@en ;
+    skos:definition "Approximate year a genre emerged. Replaces draft 'yearEstablished', whose range was a class (ex:Era), invalid for a datatype property."@en ;
+    rdfs:domain mgmwo:Genre ;
+    rdfs:range  xsd:gYear .
+
+mgmwo:startYear a owl:DatatypeProperty , owl:FunctionalProperty ;
+    skos:prefLabel "start year"@en ;
+    rdfs:domain mgmwo:Era ;
+    rdfs:range  xsd:gYear .
+
+mgmwo:endYear a owl:DatatypeProperty , owl:FunctionalProperty ;
+    skos:prefLabel "end year"@en ;
+    rdfs:domain mgmwo:Era ;
+    rdfs:range  xsd:gYear .
+
+# ---------------------------------------------------------------------
+# BRIDGE (ABox generation, not TBox) -- run against the SKOS file:
+#
+#   PREFIX skos:  <http://www.w3.org/2004/02/skos/core#>
+#   PREFIX mgmw:  <http://mgmw.org/musical-genres-works#>
+#   PREFIX mgmwo: <http://mgmw.org/ontology#>
+#   CONSTRUCT { ?g a mgmwo:Genre }
+#   WHERE {
+#     ?g skos:broader+ mgmw:MusicalGenres .
+#     FILTER (?g != mgmw:SymphonicPoem)   # route to mgmwo:MusicalForm instead
+#   }
+# ---------------------------------------------------------------------
