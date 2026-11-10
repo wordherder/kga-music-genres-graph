@@ -49,7 +49,7 @@ vann:preferredNamespacePrefix a owl:AnnotationProperty .
 vann:preferredNamespaceUri    a owl:AnnotationProperty .
 
 # ---------------------------------------------------------------------
-# CLASSES
+# TBOX
 # ---------------------------------------------------------------------
 
 mgmwo:Genre a owl:Class ;
@@ -65,30 +65,332 @@ mgmwo:MusicalForm a owl:Class ;
     rdfs:comment "Candidate home for mgmw:SymphonicPoem, which is a compositional form rather than a stylistic genre."@en .
 
 mgmwo:MusicalWork a owl:Class ;
+    rdfs:subClassOf skos:Concept ;
     skos:prefLabel "Musical work"@en ;
     skos:definition "An abstract musical composition or song, distinct from any particular performance or recording of it."@en ;
     rdfs:seeAlso <http://purl.org/ontology/mo/MusicalWork> .
 
-mgmwo:Artist a owl:Class ;
-    skos:prefLabel "Artist"@en ;
-    skos:definition "A person or group who composes or performs music."@en ;
-    rdfs:seeAlso <http://purl.org/ontology/mo/MusicArtist> .
+mgmwo:People a owl:Class ;
+    rdfs:subClassOf skos:Concept ;
+    skos:prefLabel "People"@en ;
+    skos:definition "A human being."@en ;
+    rdfs:seeAlso <http://purl.org/ontology/mo/People> .
 
 mgmwo:Era a owl:Class ;
+    rdfs:subClassOf skos:Concept ;
     skos:prefLabel "Era"@en ;
     skos:definition "A named, bounded period of time (e.g. 'late 1960s', '20th-century folk revival') used to situate the emergence of a genre."@en ;
     rdfs:seeAlso <http://www.w3.org/2006/time#ProperInterval> .
 
 mgmwo:Place a owl:Class ;
+    rdfs:subClassOf skos:Concept ;
     skos:prefLabel "Place"@en ;
     skos:definition "A geographic location (country, region, city) where a genre originated."@en ;
     rdfs:comment "Motivated by the existing definitions: Reggae and Ska (Jamaica), K-pop (South Korea), P-pop (Philippines), Country and Bluegrass (United States)."@en .
 
 # Pairwise disjointness of the top-level kinds (a genre is never an artist, etc.).
 [] a owl:AllDisjointClasses ;
-    owl:members ( mgmwo:Genre mgmwo:MusicalWork mgmwo:Artist mgmwo:Era mgmwo:Place ) .
+    owl:members ( mgmwo:Genre mgmwo:MusicalWork mgmwo:People mgmwo:Era mgmwo:Place ) .
+    mgmwo:Genre owl:disjointWith mgmwo:MusicalForm .
 
-mgmwo:Genre owl:disjointWith mgmwo:MusicalForm .
+# ---------------------------------------------------------------------
+# CBOX
+# ---------------------------------------------------------------------
+
+mgmw:Artist a skos:Concept ;
+    skos:inScheme <http://mgmw.org/artist> ;
+    skos:prefLabel "Artist"@en ;
+    skos:definition "person who engages in any form of artistic creation or practice."@en ;
+    dcterms:creator "wordherder" ;
+    dcterms:created "2026-10-09"^^xsd:date ;
+    dcterms:issued "2026-10-09"^^xsd:date ;
+    skos:broader mgmw:People
+    rdfs:seeAlso <https://www.wikidata.org/wiki/Q483501> .
+
+mgmw:Musician a skos:Concept ;
+    skos:inScheme <http://mgmw.org/musician> ;
+    skos:prefLabel "Musician"@en ;
+    skos:definition "person who composes, conducts or performs music."@en ;
+    dcterms:creator "wordherder" ;
+    dcterms:created "2026-10-09"^^xsd:date ;
+    dcterms:issued "2026-10-09"^^xsd:date ;
+    skos:broader mgmw:Artist
+    rdfs:seeAlso <https://www.wikidata.org/wiki/Q639669> .
+
+
+mgmw:Songs a skos:Concept ;
+    skos:inScheme <http://mgmw.org/songs> ;
+    skos:prefLabel "Songs"@en ;
+    skos:altLabel "Music"@en ;
+    skos:definition "musical composition for voices"@en ;
+    dcterms:creator "wordherder" ;
+    dcterms:created "2026-10-09"^^xsd:date ;
+    dcterms:issued "2026-10-09"^^xsd:date ;
+    skos:broader mgmw:MusicalForms ;
+    rdfs:seeAlso <https://www.wikidata.org/wiki/Q7366> .
+
+
+mgmw:IndependentMusic a skos:Concept ;
+    skos:inScheme <http://mgmw.org/musical-genres-works> ;
+    skos:prefLabel "Independent music"@en ;
+    skos:altLabel "Indie music"@en ;
+    skos:definition "collective term for music scene that acts independently of corporate music industry"@en ;
+    dcterms:creator "wordherder" ;
+    dcterms:created "2026-09-24"^^xsd:date ;
+    dcterms:issued "2026-09-18"^^xsd:date ;
+    dcterms:modified "2026-09-24"^^xsd:date ;
+    skos:broader mgmw:MusicalGenres ;
+    rdfs:seeAlso <https://www.wikidata.org/wiki/Q42201> ;
+    skos:changeNote "2026-09-24 — Renamed from “IndependentMusicCollectiveTermForMusicSceneThatActsIndependentlyOfCorporateMusicIndustry” to “IndependentMusic”; Preferred label changed from “Independent music\t, collective term for music scene that acts independently of corporate music industry” to “Independent music”; Definition added; Linked artifact “Independent music” added"@en, "2026-09-24 — Alternative label “Indie music” added"@en, "2026-09-25 — Renamed from “01a0d94c-9323-7640-8b1f-d1e6042a2f5f” to “IndependentMusic” (by wordherder)"@en .
+
+mgmw:FolkMusic a skos:Concept ;
+    skos:inScheme <http://mgmw.org/musical-genres-works> ;
+    skos:prefLabel "Folk music"@en ;
+    skos:altLabel "Folk"@en ;
+    skos:definition "music meta-genre encompassing traditional folk music, contemporary folk music (evolved from the former during the 20th-century folk revival), and derivatives of these two branches"@en ;
+    dcterms:creator "wordherder" ;
+    dcterms:created "2026-09-24"^^xsd:date ;
+    dcterms:issued "2026-09-18"^^xsd:date ;
+    dcterms:modified "2026-09-24"^^xsd:date ;
+    skos:broader mgmw:MusicalGenres ;
+    rdfs:seeAlso <https://www.wikidata.org/wiki/Q43343> ;
+    skos:changeNote "2026-09-24 — Renamed from “FolkMusicMusicMetaGenreEncompassingTraditionalFolkMusicContemporaryFolkMusicEvolvedFromTheFormerDuringThe20thCenturyFolkRevivalAndDerivativesOfTheseTwoBranches” to “FolkMusicMusic”; Preferred label changed from “Folk music, music meta-genre encompassing traditional folk music, contemporary folk music (evolved from the former during the 20th-century folk revival), and derivatives of these two branches” to “Folk music”; Alternative label “Folk” added; Definition added; Linked artifact “Folk music” added"@en, "2026-09-25 — Renamed from “01a0d94c-9323-7ce6-aa47-d7cce829c6eb” to “FolkMusic” (by wordherder)"@en .
+
+mgmw:BluegrassMusic a skos:Concept ;
+    skos:inScheme <http://mgmw.org/musical-genres-works> ;
+    skos:prefLabel "Bluegrass music"@en ;
+    skos:altLabel "Bluegrass"@en ;
+    skos:definition "form of American roots music"@en ;
+    dcterms:creator "wordherder" ;
+    dcterms:created "2026-09-24"^^xsd:date ;
+    dcterms:issued "2026-09-18"^^xsd:date ;
+    dcterms:modified "2026-09-24"^^xsd:date ;
+    skos:broader mgmw:MusicalGenres ;
+    rdfs:seeAlso <https://dbpedia.org/page/Bluegrass_music> ;
+    skos:changeNote "2026-09-24 — Renamed from “BluegrassMusicFormOfAmericanRootsMusicEn” to “BluegrassMusic”; Preferred label changed from “Bluegrass music, form of American roots music (en)” to “Bluegrass music”; Alternative label “Bluegrass” added; Definition added; Linked artifact “DBpedia” added"@en, "2026-09-25 — Renamed from “01a0d94c-9323-74c7-b02c-032dce7bbc30” to “BluegrassMusic” (by wordherder)"@en .
+
+mgmw:CountryMusic a skos:Concept ;
+    skos:inScheme <http://mgmw.org/musical-genres-works> ;
+    skos:prefLabel "Country music"@en ;
+    skos:altLabel "Country western music"@en ;
+    skos:definition "genre of American popular music"@en ;
+    dcterms:creator "wordherder" ;
+    dcterms:created "2026-09-24"^^xsd:date ;
+    dcterms:issued "2026-09-18"^^xsd:date ;
+    dcterms:modified "2026-09-24"^^xsd:date ;
+    skos:broader mgmw:MusicalGenres ;
+    rdfs:seeAlso <http://dbpedia.org/page/Country_music> ;
+    skos:changeNote "2026-09-24 — Renamed from “CountryMusicGenreOfAmericanPopularMusic” to “CountryMusic”; Preferred label changed from “Country music, genre of American popular music” to “Country music”; Alternative label “Country western music” added; Definition added"@en, "2026-09-24 — Linked artifact “DBpedia” added"@en, "2026-09-25 — Renamed from “01a0d94c-9323-7427-b0b8-1d6a96ab0d57” to “CountryMusic” (by wordherder)"@en .
+
+mgmw:JazzMusic a skos:Concept ;
+    skos:inScheme <http://mgmw.org/musical-genres-works> ;
+    skos:prefLabel "Jazz music"@en ;
+    skos:definition "musical style and genre"@en ;
+    dcterms:creator "wordherder" ;
+    dcterms:created "2026-09-24"^^xsd:date ;
+    dcterms:issued "2026-09-18"^^xsd:date ;
+    dcterms:modified "2026-09-24"^^xsd:date ;
+    skos:broader mgmw:MusicalGenres ;
+    rdfs:seeAlso <https://www.wikidata.org/wiki/Q8341> ;
+    skos:changeNote "2026-09-24 — Renamed from “JazzMusicMusicalStyleAndGenre” to “JazzMusic”; Preferred label changed from “Jazz music, musical style and genre” to “Jazz music”; Definition added; Linked artifact “Wikidata” added"@en, "2026-09-25 — Renamed from “01a0d94c-9323-763a-b5d8-d0ddd97a4bc0” to “JazzMusic” (by wordherder)"@en .
+
+mgmw:ReggaeMusic a skos:Concept ;
+    skos:inScheme <http://mgmw.org/musical-genres-works> ;
+    skos:prefLabel "Reggae music"@en ;
+    skos:definition "music genre that originated in Jamaica in the late 1960s"@en ;
+    dcterms:creator "wordherder" ;
+    dcterms:created "2026-09-24"^^xsd:date ;
+    dcterms:issued "2026-09-18"^^xsd:date ;
+    dcterms:modified "2026-09-24"^^xsd:date ;
+    skos:broader mgmw:MusicalGenres ;
+    rdfs:seeAlso <https://www.wikidata.org/wiki/Q9794> ;
+    skos:changeNote "2026-09-24 — Renamed from “ReggaeMusicMusicGenreThatOriginatedInJamaicaInTheLate1960s” to “ReggaeMusic”; Preferred label changed from “Reggae music, music genre that originated in Jamaica in the late 1960s” to “Reggae music”; Definition added; Linked artifact “Wikidata” added"@en, "2026-09-25 — Renamed from “01a0d94c-9323-713d-a445-2843deca0be4” to “ReggaeMusic” (by wordherder)"@en .
+
+mgmw:SkaMusic a skos:Concept ;
+    skos:inScheme <http://mgmw.org/musical-genres-works> ;
+    skos:prefLabel "Ska music"@en ;
+    skos:definition "Music genre from Jamaica in the 1950s"@en ;
+    dcterms:creator "wordherder" ;
+    dcterms:created "2026-09-24"^^xsd:date ;
+    dcterms:issued "2026-09-18"^^xsd:date ;
+    dcterms:modified "2026-09-24"^^xsd:date ;
+    skos:broader mgmw:MusicalGenres ;
+    rdfs:seeAlso <https://dbpedia.org/page/Ska> ;
+    skos:changeNote "2026-09-24 — Renamed from “SkaMusicMusicGenreFromJamaicaInThe1950s” to “SkaMusicMusic”; Preferred label changed from “Ska music, Music genre from Jamaica in the 1950s” to “Ska music”; Definition added; Linked artifact “DBpedia” added"@en, "2026-09-25 — Renamed from “01a0d94c-9323-7ff0-8098-ee2c7b72e520” to “SkaMusic” (by wordherder)"@en .
+
+mgmw:BroadwayMusic a skos:Concept ;
+    skos:inScheme <http://mgmw.org/musical-genres-works> ;
+    skos:prefLabel "Broadway music"@en ;
+    skos:altLabel "Musicals"@en ;
+    skos:definition "musical style associated with Broadway musicals"@en ;
+    dcterms:creator "wordherder" ;
+    dcterms:created "2026-09-24"^^xsd:date ;
+    dcterms:issued "2026-09-18"^^xsd:date ;
+    dcterms:modified "2026-09-24"^^xsd:date ;
+    skos:broader mgmw:MusicalGenres ;
+    rdfs:seeAlso <https://www.wikidata.org/wiki/Q109555263> ;
+    skos:changeNote "2026-09-24 — Renamed from “BroadwayMusicMusicalStyleAssociatedWithBroadwayMusicals” to “BroadwayMusic”; Preferred label changed from “Broadway music, musical style associated with Broadway musicals” to “Broadway music”; Alternative label “Musicals” added; Definition added; Linked artifact “Wikidata” added"@en, "2026-09-25 — Renamed from “01a0d94c-9323-70e5-94e7-bf6a686a5cbd” to “BroadwayMusic” (by wordherder)"@en .
+
+mgmw:HeavyMetalMusic a skos:Concept ;
+    skos:inScheme <http://mgmw.org/musical-genres-works> ;
+    skos:prefLabel "Heavy metal music"@en ;
+    skos:definition "music genre of rock music characterized by slack-tuned instruments, and unconventional changes of tonality (key) and time signature (metre)"@en ;
+    dcterms:creator "wordherder" ;
+    dcterms:created "2026-09-24"^^xsd:date ;
+    dcterms:issued "2026-09-18"^^xsd:date ;
+    dcterms:modified "2026-09-24"^^xsd:date ;
+    skos:broader mgmw:RockMusic ;
+    rdfs:seeAlso <https://www.wikidata.org/wiki/Q38848> ;
+    skos:changeNote "2026-09-24 — Parent “Rock music, popular music genre” added; Parent “Musical genres” removed"@en, "2026-09-24 — Renamed from “HeavyMetalMusicGenreOfRockMusicCharacterizedBySlackTunedInstrumentsAndUnconventionalChangesOfTonalityKeyAndTimeSignatureMetreHeavyMetal” to “HeavyMetalMusic”; Preferred label changed from “Heavy metal, music genre of rock music characterized by slack-tuned instruments, and unconventional changes of tonality (key) and time signature (metre) heavy metal” to “Heavy metal music”; Definition added; Linked artifact “Wikidata” added"@en, "2026-09-25 — Renamed from “01a0d94c-9324-77c2-ab1a-1ae19657361d” to “HeavyMetalMusic” (by wordherder)"@en .
+
+mgmw:RockMusic a skos:Concept ;
+    skos:narrower mgmw:HeavyMetalMusic, mgmw:AlternativeRockMusic ;
+    skos:inScheme <http://mgmw.org/musical-genres-works> ;
+    skos:prefLabel "Rock music"@en ;
+    skos:altLabel "Rock'n'Roll, Rock and Roll, Hard rock, Hair bands"@en ;
+    skos:definition "Popular music genre"@en ;
+    dcterms:creator "wordherder" ;
+    dcterms:created "2026-09-24"^^xsd:date ;
+    dcterms:issued "2026-09-18"^^xsd:date ;
+    dcterms:modified "2026-09-24"^^xsd:date ;
+    skos:broader mgmw:MusicalGenres ;
+    rdfs:seeAlso <https://dbpedia.org/page/Rock_music> ;
+    skos:changeNote "2026-09-24 — Parent “Genres” removed"@en, "2026-09-24 — Renamed from “RockMusicPopularMusicGenre” to “RockMusic”; Preferred label changed from “Rock music, popular music genre” to “Rock music”; Alternative label “Rock'n'Roll, Rock and Roll, Hard rock, Hair bands” added; Definition added; Linked artifact “DBpedia” added"@en, "2026-09-24 — Parent “Musical genres” added (by wordherder)"@en, "2026-09-25 — Renamed from “01a0d94c-9324-7198-9cee-5ed455c83453” to “RockMusic” (by wordherder)"@en .
+
+mgmw:AlternativeRockMusic a skos:Concept ;
+    skos:inScheme <http://mgmw.org/musical-genres-works> ;
+    skos:prefLabel "Alternative rock music"@en ;
+    skos:altLabel "Alt rock"@en ;
+    skos:definition "Subgenre of rock music"@en ;
+    dcterms:creator "wordherder" ;
+    dcterms:created "2026-09-24"^^xsd:date ;
+    dcterms:issued "2026-09-18"^^xsd:date ;
+    dcterms:modified "2026-09-24"^^xsd:date ;
+    skos:broader mgmw:RockMusic ;
+    rdfs:seeAlso <https://dbpedia.org/page/Alternative_rock> ;
+    skos:changeNote "2026-09-24 — Renamed from “AlternativeRockMusicSubgenreOfRockMusic” to “AlternativeRockMusic”; Preferred label changed from “Alternative rock music, Subgenre of rock music” to “Alternative rock music”; Alternative label “Alt rock” added; Definition added; Linked artifact “DBpedia” added"@en, "2026-09-25 — Renamed from “01a0d94c-9324-732d-832f-af584363d9c5” to “AlternativeRockMusic” (by wordherder)"@en .
+
+mgmw:WorldMusic a skos:Concept ;
+    skos:inScheme <http://mgmw.org/musical-genres-works> ;
+    skos:prefLabel "World music"@en ;
+    skos:altLabel "Ethnic music, Ethno music, Regional music, International music, Global music"@en ;
+    skos:definition "umbrella term for traditional, indigenous, popular or art music, not following North American or British popular and folk traditions"@en ;
+    dcterms:creator "wordherder" ;
+    dcterms:created "2026-09-24"^^xsd:date ;
+    dcterms:issued "2026-09-18"^^xsd:date ;
+    dcterms:modified "2026-09-24"^^xsd:date ;
+    skos:broader mgmw:MusicalGenres ;
+    rdfs:seeAlso <https://www.wikidata.org/wiki/Q205049> ;
+    skos:changeNote "2026-09-24 — Renamed from “WorldMusicUmbrellaTermForTraditionalIndigenousPopularOrArtMusicNotFollowingNorthAmericanOrBritishPopularAndFolkTraditions” to “WorldMusic”; Preferred label changed from “World music, umbrella term for traditional, indigenous, popular or art music, not following North American or British popular and folk traditions” to “World music”; Alternative label “Ethnic music, Ethno music, Regional music, International music, Global music” added; Definition added; Linked artifact “Wikidata” added"@en, "2026-09-25 — Renamed from “01a0d94c-9324-7444-8bfc-0b81ce049fa1” to “WorldMusic” (by wordherder)"@en .
+
+mgmw:HipHopMusic a skos:Concept ;
+    skos:inScheme <http://mgmw.org/musical-genres-works> ;
+    skos:prefLabel "Hip-hop music"@en ;
+    skos:altLabel "Rap, Disco rap, Rap music"@en ;
+    skos:definition "rhythmic music accompanied by rhyming speech"@en ;
+    dcterms:creator "wordherder" ;
+    dcterms:created "2026-09-24"^^xsd:date ;
+    dcterms:issued "2026-09-18"^^xsd:date ;
+    dcterms:modified "2026-09-24"^^xsd:date ;
+    skos:broader mgmw:MusicalGenres ;
+    rdfs:seeAlso <https://www.wikidata.org/wiki/Q11401> ;
+    skos:changeNote "2026-09-24 — Renamed from “HipHopMusicRhythmicMusicAccompaniedByRhymingSpeech” to “HipHopMusic”; Preferred label changed from “Hip-hop music, rhythmic music accompanied by rhyming speech” to “Hip-hop music”; Alternative label “Rap, Disco rap, Rap music” added; Definition added; Linked artifact “Wikidata” added"@en, "2026-09-25 — Renamed from “01a0d94c-9324-751e-870b-5eac8de37c56” to “HipHopMusic” (by wordherder)"@en ;
+    skos:narrower mgmw:TrapMusic .
+
+mgmw:SymphonicPoem a skos:Concept ;
+    skos:inScheme <http://mgmw.org/musical-genres-works> ;
+    skos:prefLabel "Symphonic poem"@en ;
+    skos:altLabel "Symphonic poetry"@en ;
+    skos:definition "piece of orchestral music in a single continuous section"@en ;
+    dcterms:creator "wordherder" ;
+    dcterms:created "2026-09-24"^^xsd:date ;
+    dcterms:issued "2026-09-18"^^xsd:date ;
+    dcterms:modified "2026-09-24"^^xsd:date ;
+    skos:broader mgmw:MusicalGenres ;
+    rdfs:seeAlso <https://www.wikidata.org/wiki/Q271802> ;
+    skos:changeNote "2026-09-24 — Renamed from “SymphonicPoemPieceOfOrchestralMusicInASingleContinuousSection” to “SymphonicPoem”; Preferred label changed from “Symphonic poem, piece of orchestral music in a single continuous section” to “Symphonic poem”; Alternative label “Symphonic poetry” added; Definition added; Linked artifact “Wikidata” added"@en, "2026-09-25 — Renamed from “01a0d94c-9324-7670-9730-689173b14d08” to “SymphonicPoem” (by wordherder)"@en .
+
+mgmw:WesternClassical a skos:Concept ;
+    skos:inScheme <http://mgmw.org/musical-genres-works> ;
+    skos:prefLabel "Western classical"@en ;
+    skos:altLabel "Western art music, European classical music"@en ;
+    skos:definition "music broad tradition of Western art music"@en ;
+    dcterms:creator "wordherder" ;
+    dcterms:created "2026-09-24"^^xsd:date ;
+    dcterms:issued "2026-09-18"^^xsd:date ;
+    dcterms:modified "2026-09-24"^^xsd:date ;
+    skos:broader mgmw:MusicalGenres ;
+    rdfs:seeAlso <https://www.wikidata.org/wiki/Q9730> ;
+    skos:changeNote "2026-09-24 — Renamed from “WesternClassicalMusicBroadTraditionOfWesternArtMusic” to “WesternClassical”; Preferred label changed from “Western classical, music broad tradition of Western art music” to “Western classical”; Alternative label “Western art music, European classical music” added; Definition added; Linked artifact “Wikidata” added"@en, "2026-09-25 — Renamed from “01a0d94c-9324-79bd-b5d5-2bae56b743d8” to “WesternClassical” (by wordherder)"@en .
+
+mgmw:KPopMusic a skos:Concept ;
+    skos:inScheme <http://mgmw.org/musical-genres-works> ;
+    skos:prefLabel "K-pop music"@en ;
+    skos:altLabel "Korean pop music"@en ;
+    skos:definition "popular music originating in South Korea"@en ;
+    dcterms:creator "wordherder" ;
+    dcterms:created "2026-09-24"^^xsd:date ;
+    dcterms:issued "2026-09-18"^^xsd:date ;
+    dcterms:modified "2026-09-25"^^xsd:date ;
+    skos:broader mgmw:PopMusic ;
+    rdfs:seeAlso <https://www.wikidata.org/wiki/Q213665> ;
+    skos:changeNote "2026-09-24 — Renamed from “KPopMusicPopularMusicOriginatingInSouthKorea” to “KPopMusic”; Preferred label changed from “K-pop music, popular music originating in South Korea” to “K-pop music”; Alternative label “Korean pop music” added; Definition added; Linked artifact “Wikidata” added (by wordherder)"@en, "2026-09-25 — Parent “P-pop music” added; Parent “Musical genres” removed (by wordherder)"@en, "2026-09-25 — Parent “Pop music” added; Parent “P-pop music” removed (by wordherder)"@en, "2026-09-25 — Renamed from “01a0d4af-3f7b-77cd-9058-ff1c1e5ba882” to “01a0d94c-6b4a-77f6-9fe3-8790b97c1ae5” (by wordherder)"@en, "2026-09-25 — Renamed from “01a0d94c-6b4a-77f6-9fe3-8790b97c1ae5” to “01a0d94c-9324-7577-9eae-48ceb99206f1”; Parent “Pop music” added; Parent “01a0d93a-d926-71c5-aeea-498cd8c3a616” removed (by wordherder)"@en, "2026-09-25 — Renamed from “01a0d94c-9324-7577-9eae-48ceb99206f1” to “KPopMusic” (by wordherder)"@en .
+
+mgmw:PopMusic a skos:Concept ;
+    skos:narrower mgmw:KPopMusic, mgmw:PPopMusic, mgmw:JPopMusic ;
+    skos:inScheme <http://mgmw.org/musical-genres-works> ;
+    skos:prefLabel "Pop music"@en ;
+    skos:definition "popular music genre originating in the mid-1950s in the US and UK; initially overlapping with rock and roll, later becoming associated with more commercial, accessible, and ephemeral styles distinct from rock"@en ;
+    dcterms:creator "wordherder" ;
+    dcterms:created "2026-09-25"^^xsd:date ;
+    dcterms:modified "2026-09-25"^^xsd:date ;
+    skos:broader mgmw:MusicalGenres ;
+    rdfs:seeAlso <https://www.wikidata.org/wiki/Q37073> ;
+    skos:changeNote "2026-09-25 — Term created under “Musical genres” (by wordherder)"@en, "2026-09-25 — Preferred label “Pop music” added; Definition added; Linked artifact “Wikidata” added (by wordherder)"@en, "2026-09-25 — Renamed from “01a0d94c-9324-77d4-b338-19d031bbbc49” to “PopMusic” (by wordherder)"@en .
+
+mgmw:PPopMusic a skos:Concept ;
+    skos:inScheme <http://mgmw.org/musical-genres-works> ;
+    skos:prefLabel "P-pop music"@en ;
+    skos:altLabel "Filipino pop music, Pinoy pop music"@en ;
+    skos:definition "Philippine popular music genre"@en ;
+    dcterms:creator "wordherder" ;
+    dcterms:created "2026-09-24"^^xsd:date ;
+    dcterms:issued "2026-09-18"^^xsd:date ;
+    dcterms:modified "2026-09-25"^^xsd:date ;
+    skos:broader mgmw:PopMusic ;
+    rdfs:seeAlso <https://www.wikidata.org/wiki/Q18370965> ;
+    skos:changeNote "2026-09-24 — Renamed from “PPopMusicPhilippinePopularMusicGenre” to “PPopMusic”; Preferred label changed from “P-pop music, Philippine popular music genre” to “P-pop music”; Alternative label “Filipino pop music, Pinoy pop music” added; Definition added; Linked artifact “Wikidata” added (by wordherder)"@en, "2026-09-25 — Parent “Pop music” added; Parent “Musical genres” removed (by wordherder)"@en, "2026-09-25 — Renamed from “01a0d94c-9324-718c-82c5-3f4df08c9f31” to “PPopMusic” (by wordherder)"@en .
+
+mgmw:JPopMusic a skos:Concept ;
+    skos:inScheme <http://mgmw.org/musical-genres-works> ;
+    skos:prefLabel "J-pop music"@en ;
+    skos:altLabel "Japanese pop music"@en ;
+    skos:definition "Japanese popular music genre"@en ;
+    dcterms:creator "wordherder" ;
+    dcterms:created "2026-09-24"^^xsd:date ;
+    dcterms:issued "2026-09-18"^^xsd:date ;
+    dcterms:modified "2026-09-25"^^xsd:date ;
+    skos:broader mgmw:PopMusic ;
+    rdfs:seeAlso <https://www.wikidata.org/wiki/Q131578> ;
+    skos:changeNote "2026-09-24 — Renamed from “JPopMusicJapanesePopularMusicGenre” to “JPopMusic”; Preferred label changed from “J-pop music, Japanese popular music genre” to “J-pop music”; Alternative label “Japanese pop music” added; Definition added; Linked artifact “Wikidata” added (by wordherder)"@en, "2026-09-25 — Parent “Pop music” added; Parent “Musical genres” removed (by wordherder)"@en, "2026-09-25 — Renamed from “01a0d94c-9324-793c-8779-8fbe6149af39” to “JPopMusic” (by wordherder)"@en .
+
+mgmw:TrapMusic a skos:Concept ;
+    skos:inScheme <http://mgmw.org/musical-genres-works> ;
+    skos:prefLabel "Trap music"@en ;
+    skos:definition "subgenre of hip-hop"@en ;
+    dcterms:creator "wordherder" ;
+    dcterms:created "2026-09-24"^^xsd:date ;
+    dcterms:issued "2026-09-18"^^xsd:date ;
+    dcterms:modified "2026-09-24"^^xsd:date ;
+    skos:broader mgmw:HipHopMusic ;
+    rdfs:seeAlso <https://www.wikidata.org/wiki/Q2913982> ;
+    skos:changeNote "2026-09-24 — Renamed from “TrapMusicSubgenreOfHipHop” to “TrapMusic”; Preferred label changed from “Trap music, subgenre of hip-hop” to “Trap music”; Definition added; Parent “Hip-hop music” added; Parent “Musical genres” removed; Linked artifact “Wikidata” added (by wordherder)"@en, "2026-09-24 — Renamed from “TrapMusic” to “01a0d4af-3f7b-7cd9-bab0-40862aab74cc”; Parent “Hip-hop music” added; Parent “HipHopMusic” removed (by wordherder)"@en, "2026-09-25 — Renamed from “01a0d94c-9324-7977-b4e8-f3617b05c651” to “TrapMusic” (by wordherder)"@en .
+
+# ---------------------------------------------------------------------
+# ABOX
+# ---------------------------------------------------------------------
+
+
 
 # ---------------------------------------------------------------------
 # OBJECT PROPERTIES
