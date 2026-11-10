@@ -90,22 +90,11 @@ mgmwo:Place a owl:Class ;
 
 # Pairwise disjointness of the top-level kinds (a genre is never an artist, etc.).
 [] a owl:AllDisjointClasses ;
-    owl:members ( mgmwo:Genre mgmwo:MusicalWork mgmwo:People mgmwo:Era mgmwo:Place ) .
-    mgmwo:Genre owl:disjointWith mgmwo:MusicalForm .
+    owl:members ( mgmwo:Genre mgmwo:MusicalWork mgmwo:People mgmwo:Era mgmwo:Place mgmwo:MusicalForm ) .
 
 # ---------------------------------------------------------------------
 # CBOX
 # ---------------------------------------------------------------------
-
-mgmw:Artist a skos:Concept ;
-    skos:inScheme <http://mgmw.org/artist> ;
-    skos:prefLabel "Artist"@en ;
-    skos:definition "person who engages in any form of artistic creation or practice."@en ;
-    dcterms:creator "wordherder" ;
-    dcterms:created "2026-10-09"^^xsd:date ;
-    dcterms:issued "2026-10-09"^^xsd:date ;
-    skos:broader mgmw:People
-    rdfs:seeAlso <https://www.wikidata.org/wiki/Q483501> .
 
 mgmw:Musician a skos:Concept ;
     skos:inScheme <http://mgmw.org/musician> ;
@@ -114,7 +103,7 @@ mgmw:Musician a skos:Concept ;
     dcterms:creator "wordherder" ;
     dcterms:created "2026-10-09"^^xsd:date ;
     dcterms:issued "2026-10-09"^^xsd:date ;
-    skos:broader mgmw:Artist
+    skos:broader mgmw:People ;
     rdfs:seeAlso <https://www.wikidata.org/wiki/Q639669> .
 
 
@@ -390,7 +379,49 @@ mgmw:TrapMusic a skos:Concept ;
 # ABOX
 # ---------------------------------------------------------------------
 
+mgmw:ReggaeMusic a mgmwo:Genre ;
+    mgmwo:originatedIn mgmw:Jamaica ;
+    mgmwo:emergedDuring mgmw:LateNineteenSixties ;
+    mgmwo:yearEmerged "1968"^^xsd:gYear .
 
+mgmw:TrapMusic a mgmwo:Genre ;
+    mgmwo:originatedIn mgmw:UnitedStates ;
+    mgmwo:yearEmerged "1990"^^xsd:gYear .
+
+mgmw:LateNineteenSixties a mgmwo:Era ;
+    skos:prefLabel "Late 1960s"@en ;
+    mgmwo:startYear "1965"^^xsd:gYear ;
+    mgmwo:endYear "1969"^^xsd:gYear .
+
+mgmw:TwentiethCenturyFolkRevival a mgmwo:Era ;
+    skos:prefLabel "20th-century folk revival"@en ;
+    mgmwo:startYear "1950"^^xsd:gYear ;
+    mgmwo:endYear "1970"^^xsd:gYear .
+
+mgmw:Jamaica a mgmwo:Place ;
+    skos:prefLabel "Jamaica"@en ;
+    rdfs:seeAlso <https://www.wikidata.org/wiki/Q766> .
+
+mgmw:SouthKorea a mgmwo:Place ;
+    skos:prefLabel "South Korea"@en ;
+    rdfs:seeAlso <https://www.wikidata.org/wiki/Q884> .
+
+mgmw:UnitedStates a mgmwo:Place ;
+    skos:prefLabel "United States"@en ;
+    rdfs:seeAlso <https://www.wikidata.org/wiki/Q30> .
+
+mgmw:NoWomanNoCry a mgmwo:MusicalWork ;
+    skos:prefLabel "No Woman, No Cry"@en ;
+    mgmwo:hasGenre mgmw:ReggaeMusic ;
+    mgmwo:composedBy mgmw:BobMarley ;
+    mgmwo:performedBy mgmw:BobMarley .
+
+mgmw:BobMarley a mgmwo:People ;
+    skos:prefLabel "Bob Marley"@en ;
+    mgmwo:associatedGenre mgmw:ReggaeMusic .
+
+mgmw:SymphonicPoem a mgmwo:MusicalForm ;
+    skos:prefLabel "Symphonic Poem"@en .
 
 # ---------------------------------------------------------------------
 # OBJECT PROPERTIES
@@ -412,18 +443,18 @@ mgmwo:hasForm a owl:ObjectProperty ;
 mgmwo:associatedGenre a owl:ObjectProperty ;
     skos:prefLabel "associated genre"@en ;
     skos:definition "Links an artist to a genre they are recognised as working in. Replaces draft 'playsGenre', which implies performance only and excludes composers."@en ;
-    rdfs:domain mgmwo:Artist ;
+    rdfs:domain mgmwo:People ;
     rdfs:range  mgmwo:Genre .
 
 mgmwo:composedBy a owl:ObjectProperty ;
     skos:prefLabel "composed by"@en ;
     rdfs:domain mgmwo:MusicalWork ;
-    rdfs:range  mgmwo:Artist .
+    rdfs:range  mgmwo:People .
 
 mgmwo:performedBy a owl:ObjectProperty ;
     skos:prefLabel "performed by"@en ;
     rdfs:domain mgmwo:MusicalWork ;
-    rdfs:range  mgmwo:Artist .
+    rdfs:range  mgmwo:People .
 
 mgmwo:emergedDuring a owl:ObjectProperty , owl:FunctionalProperty ;
     skos:prefLabel "emerged during"@en ;
